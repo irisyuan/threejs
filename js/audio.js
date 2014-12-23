@@ -15,6 +15,7 @@ try {
 catch(e) {
 	alert("Uh oh, use Chrome or another Web Audio API supported browser.");
 }
+
 var request = new XMLHttpRequest();
 request.open("GET", url, true);
 request.responseType = "arraybuffer";
@@ -23,11 +24,7 @@ request.onload = function() {
 	context.decodeAudioData(
 		request.response,
 		function(buffer) {
-			if(!buffer) {
-				$('#info').text('Error decoding file data');
-				return;
-			}
-
+			
 			sourceJs = context.createScriptProcessor(2048, 1, 1);
 			sourceJs.buffer = buffer;
 			sourceJs.connect(context.destination);
@@ -72,10 +69,9 @@ request.onerror = function() {
 request.send();
 
 function displayTime(time) {
-	if(time < 60) {
+	if (time < 60) {
 		return '0:' + (time < 10 ? '0' + time : time);
-	}
-	else {
+	} else {
 		var minutes = Math.floor(time / 60);
 		time -= minutes * 60;
 		return minutes + ':' + (time < 10 ? '0' + time : time);
